@@ -1,31 +1,82 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { computed, ref } from "@vue/reactivity";
+import { onBeforeUnmount, onMounted } from "vue";
+import { useStore } from "vuex";
+import Page from "./components/Page.vue";
+import { key } from "./store";
+
+const store = useStore(key);
+// data
+const pageWidth = ref(0);
+const pageHeight = ref(0);
+
+// computed
+const text = computed(() => {
+  return store.state.text;
+});
+const currentPage = computed(() => {
+  return store.state.currentPage;
+});
+const pageSize = computed(() => {
+  return store.state.pageSize;
+});
+
+const _calcSize = calcSize.bind(this);
+
+onMounted(() => {
+  store.dispatch("loadText", "sample");
+  window.addEventListener("resize", _calcSize);
+  calcSize();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", _calcSize);
+});
+
+function calcSize() {
+  pageWidth.value = window.innerWidth;
+  pageHeight.value = window.innerHeight;
+}
+
+function onChangePage(page: number) {
+  store.dispatch("changeCurrentPage", page);
+}
+
+function onChangePageSize(size: number) {
+  store.dispatch("changePageSize", size);
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <Page
+      :text="text"
+      :page-width="pageWidth"
+      :page-height="pageHeight"
+      :current-page="currentPage"
+      :page-size="pageSize"
+      :on-change-page="onChangePage"
+      :on-change-page-size="onChangePageSize"
+    />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+html,
+body {
+  width: 100%;
+  height: 100%;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic Pro",
+    Meiryo, sans-serif;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+#app {
+  width: 100%;
+  height: 100%;
 }
 </style>
