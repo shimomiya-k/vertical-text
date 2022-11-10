@@ -73,14 +73,14 @@ onUpdated(() => {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  font-size: 18px;
+  font-size: 14px;
 
   &__inner {
     // font-family: 'NotoSerifJP';
     writing-mode: vertical-rl;
     text-orientation: upright;
     line-break: strict;
-    padding: 2em;
+    padding: 2em 1em;
     line-height: 2;
     letter-spacing: 0.03em;
     column-gap: 2em;
