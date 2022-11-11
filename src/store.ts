@@ -7,6 +7,7 @@ export interface State {
   text: string;
   currentPage: number;
   pageSize: number;
+  fontScale: number;
 }
 
 // インジェクションキーを定義します
@@ -17,6 +18,7 @@ export const store = createStore<State>({
     text: "",
     currentPage: 0,
     pageSize: 1,
+    fontScale: 0.8,
   },
   mutations: {
     setText(state, payload) {
@@ -27,6 +29,9 @@ export const store = createStore<State>({
     },
     setPageSize(state, payload) {
       state.pageSize = payload.pageSize;
+    },
+    setFontScale(state, payload) {
+      state.fontScale = payload.fontScale;
     },
   },
   actions: {
@@ -52,6 +57,12 @@ export const store = createStore<State>({
       context.commit({
         type: "setPageSize",
         pageSize,
+      });
+    },
+    changeFontScale(context, fontScale) {
+      context.commit({
+        type: "setFontScale",
+        fontScale,
       });
     },
   },

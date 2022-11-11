@@ -7,6 +7,7 @@ interface Props {
   text: string;
   width: number;
   height: number;
+  fontScale: number;
   position: number;
   onChangePageSize?: (pageSize: number) => void;
 }
@@ -62,26 +63,25 @@ onUpdated(() => {
       }"
       ref="htmlRef"
     >
-      <div class="text-box__html" v-html="text"></div>
-      <div class="text-box__html" v-html="text"></div>
+      <div
+        class="text-box__html"
+        :style="{
+          fontSize: `${fontScale * 18}pt`,
+        }"
+        v-html="text"
+      ></div>
       <div class="text-box__last-daemon" ref="lastDaemon"></div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: "NotoSerifJP";
-  src: url("https://fonts.googleapis.com/css?family=Noto+Serif+JP");
-}
 .text-box {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  font-size: 14px;
 
   &__inner {
-    font-family: "NotoSerifJP";
     writing-mode: vertical-rl;
     text-orientation: upright;
     line-break: strict;
@@ -95,6 +95,10 @@ onUpdated(() => {
   &__html {
     -moz-user-select: none;
     user-select: none;
+
+    h3 {
+      font-size: 1.2rem;
+    }
   }
 
   &__last-daemon {

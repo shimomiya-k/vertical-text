@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type {} from "css-font-loading-module";
 import { computed, ref } from "@vue/reactivity";
 import { onBeforeUnmount, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -19,6 +20,9 @@ const currentPage = computed(() => {
 });
 const pageSize = computed(() => {
   return store.state.pageSize;
+});
+const fontScale = computed(() => {
+  return store.state.fontScale;
 });
 
 const _calcSize = calcSize.bind(this);
@@ -44,6 +48,10 @@ function onChangePage(page: number) {
   (changedPage as any).postMessage(page);
 }
 
+function onChangeFontScale(scale: number) {
+  store.dispatch("changeFontScale", scale);
+}
+
 function onChangePageSize(size: number) {
   store.dispatch("changePageSize", size);
   // @ts-ignore
@@ -57,12 +65,37 @@ function onChangePageSize(size: number) {
 (window as any).changeCurrentPage = (page: number) => {
   onChangePage(page);
 };
+
+(window as any).changeFontScale = (scale: number) => {
+  onChangeFontScale(scale);
+};
+
+(window as any).addFont = (args: string) => {
+  const { fontFamily, fontData } = JSON.parse(args);
+
+  if (!fontFamily || !fontData) {
+    return;
+  }
+
+  var fontFace = new FontFace(`${fontFamily}`, `url(${fontData})`);
+
+  fontFace
+    .load()
+    .then(function (loadedFace) {
+      document.fonts.add(loadedFace);
+      document.body.style.fontFamily = loadedFace.family;
+    })
+    .catch(function (e) {
+      console.error("読み込み失敗...");
+    });
+};
 </script>
 
 <template>
   <div id="app">
     <Page
       :text="text"
+      :font-scale="fontScale"
       :page-width="pageWidth"
       :page-height="pageHeight"
       :current-page="currentPage"

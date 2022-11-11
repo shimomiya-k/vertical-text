@@ -6,6 +6,7 @@ interface Props {
   currentPage: number;
   pageSize: number;
   text: string;
+  fontScale: number;
   pageWidth: number;
   pageHeight: number;
   onChangePage: (currentPage: number) => void;
@@ -86,6 +87,7 @@ function onTouchEnd(e: TouchEvent) {
     >
       <TextBox
         :text="text"
+        :font-scale="fontScale"
         :width="pageWidth"
         :height="pageHeight"
         :position="currentPage + 1"
@@ -93,6 +95,7 @@ function onTouchEnd(e: TouchEvent) {
 
       <TextBox
         :text="text"
+        :font-scale="fontScale"
         :width="pageWidth"
         :height="pageHeight"
         :position="currentPage"
@@ -101,6 +104,7 @@ function onTouchEnd(e: TouchEvent) {
 
       <TextBox
         :text="text"
+        :font-scale="fontScale"
         :width="pageWidth"
         :height="pageHeight"
         :position="currentPage - 1"
