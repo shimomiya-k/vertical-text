@@ -21,7 +21,6 @@ const props = defineProps<Props>();
 function onTouchStart(e: TouchEvent) {
   e.preventDefault();
   isTouching.value = true;
-  console.log(containerRef.value);
   containerRef.value!.classList.add("is-stop");
 
   if (e.changedTouches) {

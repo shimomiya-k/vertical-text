@@ -63,6 +63,7 @@ onUpdated(() => {
       ref="htmlRef"
     >
       <div class="text-box__html" v-html="text"></div>
+      <div class="text-box__html" v-html="text"></div>
       <div class="text-box__last-daemon" ref="lastDaemon"></div>
     </div>
   </div>
@@ -95,7 +96,6 @@ onUpdated(() => {
   &__last-daemon {
     width: 1px;
     height: 100%;
-    background: #f00;
   }
 }
 </style>

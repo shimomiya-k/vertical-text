@@ -45,6 +45,10 @@ function onChangePage(page: number) {
 function onChangePageSize(size: number) {
   store.dispatch("changePageSize", size);
 }
+
+(window as any).loadText = (text: string) => {
+  store.dispatch("loadText", text);
+};
 </script>
 
 <template>

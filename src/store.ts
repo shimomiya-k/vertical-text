@@ -31,13 +31,15 @@ export const store = createStore<State>({
   },
   actions: {
     loadText(context, filename) {
+      if (filename !== "sample") {
+        context.commit({ type: "setText", text: filename });
+        return;
+      }
+
       fetch(`${filename}.txt`)
         .then((resp) => resp.text())
         .then((text) => {
-          context.commit({
-            type: "setText",
-            text,
-          });
+          context.commit({ type: "setText", text });
         });
     },
     changeCurrentPage(context, currentPage) {
