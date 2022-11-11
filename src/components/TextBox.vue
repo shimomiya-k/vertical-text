@@ -70,6 +70,10 @@ onUpdated(() => {
 </template>
 
 <style lang="scss" scoped>
+@font-face {
+  font-family: "NotoSerifJP";
+  src: url("https://fonts.googleapis.com/css?family=Noto+Serif+JP");
+}
 .text-box {
   position: relative;
   overflow: hidden;
@@ -77,7 +81,7 @@ onUpdated(() => {
   font-size: 14px;
 
   &__inner {
-    // font-family: 'NotoSerifJP';
+    font-family: "NotoSerifJP";
     writing-mode: vertical-rl;
     text-orientation: upright;
     line-break: strict;

@@ -40,14 +40,22 @@ function calcSize() {
 
 function onChangePage(page: number) {
   store.dispatch("changeCurrentPage", page);
+  // @ts-ignore
+  (changedPage as any).postMessage(page);
 }
 
 function onChangePageSize(size: number) {
   store.dispatch("changePageSize", size);
+  // @ts-ignore
+  (changedPageSize as any).postMessage(size);
 }
 
 (window as any).loadText = (text: string) => {
   store.dispatch("loadText", text);
+};
+
+(window as any).changeCurrentPage = (page: number) => {
+  onChangePage(page);
 };
 </script>
 
