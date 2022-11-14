@@ -100,11 +100,6 @@ onUpdated(() => {
   &__html {
     -moz-user-select: none;
     user-select: none;
-
-    h3 {
-      font-size: 1.2rem;
-      margin-block-start: 2em;
-    }
   }
 
   &__last-daemon {

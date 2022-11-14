@@ -155,11 +155,5 @@ body {
   line-height: 2;
   letter-spacing: 0.03em;
   overflow-wrap: break-word;
-
-  h3 {
-    font-size: 1.2rem;
-    line-height: 1.1;
-    margin-block-start: 2em;
-  }
 }
 </style>

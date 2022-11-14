@@ -35,7 +35,6 @@ function onTouchMove(e: TouchEvent) {
   }
 
   const x = e.changedTouches[0].pageX;
-  console.log(-props.pageWidth + (x - moveStartX.value));
   containerRef.value!.style.transform = `translateX(${
     -props.pageWidth + (x - moveStartX.value)
   }px)`;
@@ -44,7 +43,7 @@ function onTouchMove(e: TouchEvent) {
 async function onTouchEnd(e: TouchEvent) {
   const x = e.changedTouches[0].pageX;
   const diffX = x - moveStartX.value;
-  if (Math.abs(diffX) > props.pageWidth / 2) {
+  if (Math.abs(diffX) > props.pageWidth / 4) {
     const wait = async (ms: number) =>
       new Promise((resolve) => setTimeout(resolve, ms)); // TODO: なめらかになるようにtransform
     // ページ送り
@@ -53,12 +52,10 @@ async function onTouchEnd(e: TouchEvent) {
       containerRef.value!.style.transform = `translateX(${0}px)`;
       // transformの時間0.5秒待つ(以下CSSで設定している値)
       // transition: transform 0.5s ease-out;
-      await wait(500);
+      await wait(600);
 
       containerRef.value!.classList.add("is-stop");
       props.onChangePage(props.currentPage + 1);
-      containerRef.value!.classList.remove("is-stop");
-      return;
     } else if (diffX < 0 && props.currentPage > 0) {
       containerRef.value!.classList.remove("is-stop");
       containerRef.value!.style.transform = `translateX(${
@@ -66,12 +63,10 @@ async function onTouchEnd(e: TouchEvent) {
       }px)`;
       // transformの時間0.5秒待つ(以下CSSで設定している値)
       // transition: transform 0.5s ease-out;
-      await wait(500);
+      await wait(600);
 
       containerRef.value!.classList.add("is-stop");
       props.onChangePage(props.currentPage - 1);
-      containerRef.value!.classList.remove("is-stop");
-      return;
     }
   }
 
