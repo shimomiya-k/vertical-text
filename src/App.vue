@@ -31,7 +31,6 @@ const isVertical = computed(() => {
 const _calcSize = calcSize.bind(this);
 
 onMounted(() => {
-  store.dispatch("loadText", "sample");
   window.addEventListener("resize", _calcSize);
   calcSize();
 });
