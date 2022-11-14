@@ -76,14 +76,18 @@ onUpdated(() => {
 </template>
 
 <style lang="scss" scoped>
+// @font-face {
+//   font-family: "NotoSerifJP";
+//   src: url("../assets/NotoSerifJP-Regular.woff2");
+// }
 .text-box {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
 
   &__inner {
+    // font-family: "NotoSerifJP";
     writing-mode: vertical-rl;
-    text-orientation: upright;
     line-break: strict;
     padding: 2em 1em;
     line-height: 2;

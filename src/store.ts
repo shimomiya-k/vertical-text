@@ -8,6 +8,7 @@ export interface State {
   currentPage: number;
   pageSize: number;
   fontScale: number;
+  isVertical: boolean;
 }
 
 // インジェクションキーを定義します
@@ -19,6 +20,7 @@ export const store = createStore<State>({
     currentPage: 0,
     pageSize: 1,
     fontScale: 0.8,
+    isVertical: true,
   },
   mutations: {
     setText(state, payload) {
@@ -32,6 +34,9 @@ export const store = createStore<State>({
     },
     setFontScale(state, payload) {
       state.fontScale = payload.fontScale;
+    },
+    setIsVertical(state, payload) {
+      state.isVertical = payload.isVertical;
     },
   },
   actions: {
@@ -63,6 +68,12 @@ export const store = createStore<State>({
       context.commit({
         type: "setFontScale",
         fontScale,
+      });
+    },
+    changeIsVertical(context, isVertical) {
+      context.commit({
+        type: "setIsVertical",
+        isVertical,
       });
     },
   },

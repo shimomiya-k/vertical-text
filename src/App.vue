@@ -24,6 +24,9 @@ const pageSize = computed(() => {
 const fontScale = computed(() => {
   return store.state.fontScale;
 });
+const isVertical = computed(() => {
+  return store.state.isVertical;
+});
 
 const _calcSize = calcSize.bind(this);
 
@@ -45,7 +48,7 @@ function calcSize() {
 function onChangePage(page: number) {
   store.dispatch("changeCurrentPage", page);
   // @ts-ignore
-  (changedPage as any).postMessage(page);
+  window.flutter_inappwebview.callHandler("changedPage", page);
 }
 
 function onChangeFontScale(scale: number) {
@@ -55,7 +58,11 @@ function onChangeFontScale(scale: number) {
 function onChangePageSize(size: number) {
   store.dispatch("changePageSize", size);
   // @ts-ignore
-  (changedPageSize as any).postMessage(size);
+  window.flutter_inappwebview.callHandler("changedPageSize", size);
+}
+
+function onChangeIsVertical(isVertical: boolean) {
+  store.dispatch("changeIsVertical", isVertical);
 }
 
 (window as any).loadText = (text: string) => {
@@ -68,6 +75,20 @@ function onChangePageSize(size: number) {
 
 (window as any).changeFontScale = (scale: number) => {
   onChangeFontScale(scale);
+};
+
+(window as any).changeIsVertical = (isVertical: string) => {
+  onChangeIsVertical(isVertical === "true");
+};
+
+(window as any).addColorStyle = (args: string) => {
+  const { backgroundColor, textColor } = JSON.parse(args);
+  if (!backgroundColor || !textColor) {
+    return;
+  }
+
+  document.body.style.color = `#${textColor}`;
+  document.body.style.backgroundColor = `#${backgroundColor}`;
 };
 
 (window as any).addFont = (args: string) => {
@@ -102,26 +123,43 @@ function onChangePageSize(size: number) {
       :page-size="pageSize"
       :on-change-page="onChangePage"
       :on-change-page-size="onChangePageSize"
+      v-if="isVertical"
     />
+
+    <div
+      class="text-box"
+      v-else="isVertical"
+      v-html="text"
+      :style="{
+        fontSize: `${fontScale * 18}pt`,
+      }"
+    ></div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 html,
 body {
   width: 100%;
   height: 100%;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic Pro",
-    Meiryo, sans-serif;
+#app {
+  width: 100vw;
+  height: 100%;
 }
 
-#app {
-  width: 100%;
-  height: 100%;
+.text-box {
+  position: relative;
+
+  margin: 0em 1em 0em 1em;
+  line-height: 2;
+  letter-spacing: 0.03em;
+  overflow-wrap: break-word;
+
+  h3 {
+    font-size: 1.2rem;
+    line-height: 1.1;
+  }
 }
 </style>
