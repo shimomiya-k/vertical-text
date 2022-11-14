@@ -88,7 +88,8 @@ onUpdated(() => {
   &__inner {
     // font-family: "NotoSerifJP";
     writing-mode: vertical-rl;
-    line-break: anywhere;
+    overflow-wrap: break-word;
+    line-break: strict;
     padding: 2em 1em;
     line-height: 2;
     letter-spacing: 0.03em;
@@ -102,6 +103,7 @@ onUpdated(() => {
 
     h3 {
       font-size: 1.2rem;
+      margin-block-start: 2em;
     }
   }
 

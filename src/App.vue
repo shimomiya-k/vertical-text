@@ -159,6 +159,7 @@ body {
   h3 {
     font-size: 1.2rem;
     line-height: 1.1;
+    margin-block-start: 2em;
   }
 }
 </style>

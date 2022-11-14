@@ -35,28 +35,46 @@ function onTouchMove(e: TouchEvent) {
   }
 
   const x = e.changedTouches[0].pageX;
+  console.log(-props.pageWidth + (x - moveStartX.value));
   containerRef.value!.style.transform = `translateX(${
     -props.pageWidth + (x - moveStartX.value)
   }px)`;
 }
 
-function onTouchEnd(e: TouchEvent) {
+async function onTouchEnd(e: TouchEvent) {
   const x = e.changedTouches[0].pageX;
   const diffX = x - moveStartX.value;
-  if (Math.abs(diffX) > props.pageWidth / 4) {
+  if (Math.abs(diffX) > props.pageWidth / 2) {
+    const wait = async (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms)); // TODO: なめらかになるようにtransform
     // ページ送り
     if (diffX > 0 && props.currentPage < props.pageSize - 1) {
+      containerRef.value!.classList.remove("is-stop");
+      containerRef.value!.style.transform = `translateX(${0}px)`;
+      // transformの時間0.5秒待つ(以下CSSで設定している値)
+      // transition: transform 0.5s ease-out;
+      await wait(500);
+
+      containerRef.value!.classList.add("is-stop");
       props.onChangePage(props.currentPage + 1);
-      containerRef.value!.style.transform = `translateX(${
-        -props.pageWidth + diffX - props.pageWidth
-      }px)`;
+      containerRef.value!.classList.remove("is-stop");
+      return;
     } else if (diffX < 0 && props.currentPage > 0) {
-      props.onChangePage(props.currentPage - 1);
+      containerRef.value!.classList.remove("is-stop");
       containerRef.value!.style.transform = `translateX(${
-        -props.pageWidth + diffX + props.pageWidth
+        -props.pageWidth * 2
       }px)`;
+      // transformの時間0.5秒待つ(以下CSSで設定している値)
+      // transition: transform 0.5s ease-out;
+      await wait(500);
+
+      containerRef.value!.classList.add("is-stop");
+      props.onChangePage(props.currentPage - 1);
+      containerRef.value!.classList.remove("is-stop");
+      return;
     }
   }
+
   setTimeout(() => {
     containerRef.value!.classList.remove("is-stop");
     containerRef.value!.style.transform = `translateX(${-props.pageWidth}px)`;
