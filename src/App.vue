@@ -44,6 +44,14 @@ function calcSize() {
   pageHeight.value = window.innerHeight;
 }
 
+function onChangeTitle(title: string) {
+  store.dispatch("changeTitle", title);
+}
+
+function onChangeAuthor(author: string) {
+  store.dispatch("changeAuthor", author);
+}
+
 function onChangePage(page: number) {
   store.dispatch("changeCurrentPage", page);
   // @ts-ignore
@@ -64,8 +72,20 @@ function onChangeIsVertical(isVertical: boolean) {
   store.dispatch("changeIsVertical", isVertical);
 }
 
+function onChangeShowPageNum(showPageNum: boolean) {
+  store.dispatch("changeShowPageNum", showPageNum);
+}
+
 (window as any).loadText = (text: string) => {
   store.dispatch("loadText", text);
+};
+
+(window as any).changeTitle = (title: string) => {
+  onChangeTitle(title);
+};
+
+(window as any).changeAuthor = (author: string) => {
+  onChangeAuthor(author);
 };
 
 (window as any).changeCurrentPage = (page: number) => {
@@ -78,6 +98,10 @@ function onChangeIsVertical(isVertical: boolean) {
 
 (window as any).changeIsVertical = (isVertical: string) => {
   onChangeIsVertical(isVertical === "true");
+};
+
+(window as any).changeShowPageNum = (showPageNum: string) => {
+  onChangeShowPageNum(showPageNum === "true");
 };
 
 (window as any).addColorStyle = (args: string) => {

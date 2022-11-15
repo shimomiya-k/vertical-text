@@ -5,10 +5,13 @@ import { createStore, Store } from "vuex";
 // ストアのステートに対して型を定義します
 export interface State {
   text: string;
+  title: string;
+  author: string;
   currentPage: number;
   pageSize: number;
   fontScale: number;
   isVertical: boolean;
+  showPageNum: boolean;
 }
 
 // インジェクションキーを定義します
@@ -17,14 +20,23 @@ export const key: InjectionKey<Store<State>> = Symbol();
 export const store = createStore<State>({
   state: {
     text: "",
+    title: "",
+    author: "",
     currentPage: 0,
     pageSize: 1,
     fontScale: 0.8,
-    isVertical: true,
+    isVertical: false,
+    showPageNum: true,
   },
   mutations: {
     setText(state, payload) {
       state.text = payload.text;
+    },
+    setTitle(state, payload) {
+      state.title = payload.title;
+    },
+    setAuthor(state, payload) {
+      state.author = payload.author;
     },
     setCurrentPage(state, payload) {
       state.currentPage = payload.currentPage;
@@ -37,6 +49,9 @@ export const store = createStore<State>({
     },
     setIsVertical(state, payload) {
       state.isVertical = payload.isVertical;
+    },
+    setShowPageNum(state, payload) {
+      state.showPageNum = payload.showPageNum;
     },
   },
   actions: {
@@ -51,6 +66,18 @@ export const store = createStore<State>({
         .then((text) => {
           context.commit({ type: "setText", text });
         });
+    },
+    changeTitle(context, title) {
+      context.commit({
+        type: "setTitle",
+        title,
+      });
+    },
+    changeAuthor(context, author) {
+      context.commit({
+        type: "setAuthor",
+        author,
+      });
     },
     changeCurrentPage(context, currentPage) {
       context.commit({
@@ -74,6 +101,12 @@ export const store = createStore<State>({
       context.commit({
         type: "setIsVertical",
         isVertical,
+      });
+    },
+    changeShowPageNum(context, showPageNum) {
+      context.commit({
+        type: "setShowPageNum",
+        showPageNum,
       });
     },
   },
