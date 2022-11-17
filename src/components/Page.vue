@@ -14,6 +14,7 @@ interface Props {
 }
 
 const isTouching = ref(false);
+const isMoving = ref(false);
 const moveStartX = ref(0);
 const containerRef = ref<HTMLDivElement>();
 
@@ -21,6 +22,11 @@ const props = defineProps<Props>();
 
 function onTouchStart(e: TouchEvent) {
   e.preventDefault();
+
+  if (isMoving.value) {
+    return;
+  }
+
   isTouching.value = true;
   containerRef.value!.classList.add("is-stop");
 
@@ -34,6 +40,11 @@ function onTouchMove(e: TouchEvent) {
     return;
   }
 
+  if (!isTouching.value && isMoving.value) {
+    return;
+  }
+
+  isMoving.value = true;
   const x = e.changedTouches[0].pageX;
   containerRef.value!.style.transform = `translateX(${
     -props.pageWidth + (x - moveStartX.value)
@@ -41,11 +52,16 @@ function onTouchMove(e: TouchEvent) {
 }
 
 async function onTouchEnd(e: TouchEvent) {
+  if (!isTouching.value) {
+    return;
+  }
+
+  isTouching.value = false;
   const x = e.changedTouches[0].pageX;
   const diffX = x - moveStartX.value;
+  const wait = async (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms)); // TODO: なめらかになるようにtransform
   if (Math.abs(diffX) > props.pageWidth / 4) {
-    const wait = async (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms)); // TODO: なめらかになるようにtransform
     // ページ送り
     if (diffX > 0 && props.currentPage < props.pageSize - 1) {
       containerRef.value!.classList.remove("is-stop");
@@ -55,7 +71,9 @@ async function onTouchEnd(e: TouchEvent) {
       await wait(600);
 
       containerRef.value!.classList.add("is-stop");
+      isMoving.value = false;
       props.onChangePage(props.currentPage + 1);
+      return;
     } else if (diffX < 0 && props.currentPage > 0) {
       containerRef.value!.classList.remove("is-stop");
       containerRef.value!.style.transform = `translateX(${
@@ -66,15 +84,16 @@ async function onTouchEnd(e: TouchEvent) {
       await wait(600);
 
       containerRef.value!.classList.add("is-stop");
+      isMoving.value = false;
       props.onChangePage(props.currentPage - 1);
+      return;
     }
   }
 
-  setTimeout(() => {
-    containerRef.value!.classList.remove("is-stop");
-    containerRef.value!.style.transform = `translateX(${-props.pageWidth}px)`;
-    isTouching.value = false;
-  }, 1);
+  containerRef.value!.classList.remove("is-stop");
+  containerRef.value!.style.transform = `translateX(${-props.pageWidth}px)`;
+  await wait(600);
+  isMoving.value = false;
 }
 </script>
 
