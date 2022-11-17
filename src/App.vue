@@ -10,6 +10,12 @@ const store = useStore(key);
 // data
 const pageWidth = ref(0);
 const pageHeight = ref(0);
+const timeout = ref("");
+
+setTimeout(() => {
+  timeout.value =
+    "読み込み時間が長い場合は、アプリを再起動するか、文字数を減らして再度お試しください。";
+}, 5000);
 
 // computed
 const text = computed(() => {
@@ -19,6 +25,7 @@ const currentPage = computed(() => {
   return store.state.currentPage;
 });
 const pageSize = computed(() => {
+  console.log(`pageSize: ${store.state.pageSize}`);
   return store.state.pageSize;
 });
 const fontScale = computed(() => {
@@ -26,6 +33,15 @@ const fontScale = computed(() => {
 });
 const isVertical = computed(() => {
   return store.state.isVertical;
+});
+const isProgress = computed(() => {
+  const isEmpty = store.state.text.length === 0;
+  if (store.state.isVertical) {
+    const minSize = store.state.pageSize <= 1;
+    return isEmpty && minSize;
+  }
+
+  return isEmpty;
 });
 
 const _calcSize = calcSize.bind(this);
@@ -137,6 +153,15 @@ function onChangeShowPageNum(showPageNum: boolean) {
 
 <template>
   <div id="app">
+    <div v-if="isProgress" class="absolute top-0 right-0 left-0 bottom-0">
+      <div class="flex flex-col items-center justify-center h-full">
+        <div
+          class="animate-spin h-10 w-10 border-4 border-blue-500 rounded-full border-t-transparent"
+        ></div>
+        <p class="pt-10 px-10 text-xs">{{ timeout }}</p>
+      </div>
+    </div>
+
     <Page
       :text="text"
       :font-scale="fontScale"
@@ -151,7 +176,7 @@ function onChangeShowPageNum(showPageNum: boolean) {
 
     <div
       class="text-box"
-      v-else="isVertical"
+      v-else-if="!isVertical"
       v-html="text"
       :style="{
         fontSize: `${fontScale * 18}pt`,

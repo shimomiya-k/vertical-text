@@ -23,7 +23,7 @@ export const store = createStore<State>({
     title: "",
     author: "",
     currentPage: 0,
-    pageSize: 1,
+    pageSize: 0,
     fontScale: 0.8,
     isVertical: false,
     showPageNum: true,

@@ -30,7 +30,7 @@ const showPageNum = computed(() => {
 });
 
 // data
-const pageSize = ref(1);
+const pageSize = ref(0);
 const scrollHeight = ref(1);
 const htmlRef = ref<HTMLDivElement>();
 const lastDaemon = ref<HTMLDivElement>();
