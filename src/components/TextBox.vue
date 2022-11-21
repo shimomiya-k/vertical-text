@@ -132,10 +132,10 @@ onUpdated(() => {
     writing-mode: vertical-rl;
     overflow-wrap: break-word;
     line-break: strict;
-    padding: 2em 1em;
+    padding: 3em 1em 3em 1em;
     line-height: 2;
     letter-spacing: 0.03em;
-    column-gap: 2em;
+    column-gap: 3em;
     box-sizing: border-box;
   }
 
