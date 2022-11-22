@@ -75,8 +75,11 @@ function onChangeAuthor(author: string) {
 
 function onChangePage(page: number) {
   store.dispatch("changeCurrentPage", page);
+  try {
+    // @ts-ignore
+    window.flutter_inappwebview.callHandler("changedPage", page);
+  } catch {}
   // @ts-ignore
-  window.flutter_inappwebview.callHandler("changedPage", page);
 }
 
 function onChangeFontScale(scale: number) {
@@ -85,8 +88,10 @@ function onChangeFontScale(scale: number) {
 
 function onChangePageSize(size: number) {
   store.dispatch("changePageSize", size);
-  // @ts-ignore
-  window.flutter_inappwebview.callHandler("changedPageSize", size);
+  try {
+    // @ts-ignore
+    window.flutter_inappwebview.callHandler("changedPageSize", size);
+  } catch {}
 }
 
 function onChangeIsVertical(isVertical: boolean) {
@@ -172,14 +177,7 @@ function onChangeScrollHeight(scrollHeight: number) {
     <div v-if="isProgress" class="absolute top-0 right-0 left-0 bottom-0">
       <div class="flex flex-col items-center justify-center h-full">
         <div
-          class="
-            animate-spin
-            h-10
-            w-10
-            border-4 border-blue-500
-            rounded-full
-            border-t-transparent
-          "
+          class="animate-spin h-10 w-10 border-4 border-blue-500 rounded-full border-t-transparent"
         ></div>
         <p class="pt-10 px-10 text-xs">{{ timeout }}</p>
       </div>
@@ -225,7 +223,7 @@ body {
 .text-box {
   position: relative;
 
-  margin: 0em 1em 0em 1em;
+  margin: 0em 1em 5em 1em;
   line-height: 2;
   letter-spacing: 0.03em;
   overflow-wrap: break-word;
