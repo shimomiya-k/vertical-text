@@ -12,6 +12,7 @@ interface Props {
   fontScale: number;
   position: number;
   onChangePageSize?: (pageSize: number) => void;
+  onChangeScrollHeight?: (scrollHeight: number) => void;
 }
 const props = defineProps<Props>();
 
@@ -45,10 +46,13 @@ function calcSize() {
   const totalHeight = rect2.bottom - rect1.top;
 
   scrollHeight.value = itemHeight + gapHeight;
-  pageSize.value = totalHeight / (itemHeight + gapHeight);
+  pageSize.value = Math.round(totalHeight / (itemHeight + gapHeight));
 
   if (props.onChangePageSize) {
     props.onChangePageSize(pageSize.value);
+  }
+  if (props.onChangeScrollHeight) {
+    props.onChangeScrollHeight(scrollHeight.value);
   }
 }
 

@@ -6,11 +6,13 @@ interface Props {
   currentPage: number;
   pageSize: number;
   text: string;
+  textIdol: string;
   fontScale: number;
   pageWidth: number;
   pageHeight: number;
   onChangePage: (currentPage: number) => void;
   onChangePageSize: (pageSize: number) => void;
+  onChangeScrollHeight: (scrollHeight: number) => void;
 }
 
 const isTouching = ref(false);
@@ -118,7 +120,7 @@ async function onTouchEnd(e: TouchEvent) {
       @touchend="onTouchEnd"
     >
       <TextBox
-        :text="text"
+        :text="textIdol"
         :font-scale="fontScale"
         :width="pageWidth"
         :height="pageHeight"
@@ -132,10 +134,11 @@ async function onTouchEnd(e: TouchEvent) {
         :height="pageHeight"
         :position="currentPage"
         :on-change-page-size="onChangePageSize"
+        :on-change-scroll-height="onChangeScrollHeight"
       ></TextBox>
 
       <TextBox
-        :text="text"
+        :text="textIdol"
         :font-scale="fontScale"
         :width="pageWidth"
         :height="pageHeight"

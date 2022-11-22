@@ -21,6 +21,11 @@ setTimeout(() => {
 const text = computed(() => {
   return store.state.text;
 });
+const textIdol = computed(() => {
+  const reg = /<h3 id="chapter\-\d+">/g;
+  const temp = store.state.text.replaceAll(reg, "<h3>");
+  return temp;
+});
 const currentPage = computed(() => {
   return store.state.currentPage;
 });
@@ -92,6 +97,10 @@ function onChangeShowPageNum(showPageNum: boolean) {
   store.dispatch("changeShowPageNum", showPageNum);
 }
 
+function onChangeScrollHeight(scrollHeight: number) {
+  store.dispatch("changeScrollHeight", scrollHeight);
+}
+
 (window as any).loadText = (text: string) => {
   store.dispatch("loadText", text);
 };
@@ -149,6 +158,13 @@ function onChangeShowPageNum(showPageNum: boolean) {
       console.error("読み込み失敗...");
     });
 };
+
+(window as any).moveToChapter = (chapter: string) => {
+  const rect = document.getElementById(chapter)?.getBoundingClientRect();
+  if (!rect) return;
+  const index = Math.round(rect.top / store.state.scrollHeight);
+  onChangePage(store.state.currentPage + index);
+};
 </script>
 
 <template>
@@ -156,7 +172,14 @@ function onChangeShowPageNum(showPageNum: boolean) {
     <div v-if="isProgress" class="absolute top-0 right-0 left-0 bottom-0">
       <div class="flex flex-col items-center justify-center h-full">
         <div
-          class="animate-spin h-10 w-10 border-4 border-blue-500 rounded-full border-t-transparent"
+          class="
+            animate-spin
+            h-10
+            w-10
+            border-4 border-blue-500
+            rounded-full
+            border-t-transparent
+          "
         ></div>
         <p class="pt-10 px-10 text-xs">{{ timeout }}</p>
       </div>
@@ -164,6 +187,7 @@ function onChangeShowPageNum(showPageNum: boolean) {
 
     <Page
       :text="text"
+      :text-idol="textIdol"
       :font-scale="fontScale"
       :page-width="pageWidth"
       :page-height="pageHeight"
@@ -171,6 +195,7 @@ function onChangeShowPageNum(showPageNum: boolean) {
       :page-size="pageSize"
       :on-change-page="onChangePage"
       :on-change-page-size="onChangePageSize"
+      :on-change-scroll-height="onChangeScrollHeight"
       v-if="isVertical"
     />
 

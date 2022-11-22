@@ -12,6 +12,7 @@ export interface State {
   fontScale: number;
   isVertical: boolean;
   showPageNum: boolean;
+  scrollHeight: number;
 }
 
 // インジェクションキーを定義します
@@ -27,6 +28,7 @@ export const store = createStore<State>({
     fontScale: 0.8,
     isVertical: false,
     showPageNum: true,
+    scrollHeight: 0.0,
   },
   mutations: {
     setText(state, payload) {
@@ -52,6 +54,9 @@ export const store = createStore<State>({
     },
     setShowPageNum(state, payload) {
       state.showPageNum = payload.showPageNum;
+    },
+    setScrollHeight(state, payload) {
+      state.scrollHeight = payload.scrollHeight;
     },
   },
   actions: {
@@ -107,6 +112,12 @@ export const store = createStore<State>({
       context.commit({
         type: "setShowPageNum",
         showPageNum,
+      });
+    },
+    changeScrollHeight(context, scrollHeight) {
+      context.commit({
+        type: "setScrollHeight",
+        scrollHeight,
       });
     },
   },
