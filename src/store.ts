@@ -13,6 +13,7 @@ export interface State {
   isVertical: boolean;
   showPageNum: boolean;
   scrollHeight: number;
+  loading: boolean;
 }
 
 // インジェクションキーを定義します
@@ -29,6 +30,7 @@ export const store = createStore<State>({
     isVertical: false,
     showPageNum: true,
     scrollHeight: 0.0,
+    loading: false,
   },
   mutations: {
     setText(state, payload) {
@@ -58,11 +60,21 @@ export const store = createStore<State>({
     setScrollHeight(state, payload) {
       state.scrollHeight = payload.scrollHeight;
     },
+    setLoading(state, payload) {
+      state.loading = payload.loading;
+    },
   },
   actions: {
     loadText(context, filename) {
+      if (context.state.loading) {
+        return;
+      }
+
+      context.commit({ type: "setLoading", loading: true });
+
       if (filename !== "sample") {
         context.commit({ type: "setText", text: filename });
+        context.commit({ type: "setLoading", loading: false });
         return;
       }
 
@@ -70,6 +82,9 @@ export const store = createStore<State>({
         .then((resp) => resp.text())
         .then((text) => {
           context.commit({ type: "setText", text });
+        })
+        .finally(() => {
+          context.commit({ type: "setLoading", loading: false });
         });
     },
     changeTitle(context, title) {

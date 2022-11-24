@@ -10,12 +10,9 @@ const store = useStore(key);
 // data
 const pageWidth = ref(0);
 const pageHeight = ref(0);
-const timeout = ref("");
-
-setTimeout(() => {
-  timeout.value =
-    "読み込み時間が長い場合は、アプリを再起動するか、文字数を減らして再度お試しください。";
-}, 5000);
+const timeout = ref(
+  "読み込み時間が長い場合は、アプリを再起動するか、文字数を減らして再度お試しください。"
+);
 
 // computed
 const text = computed(() => {
@@ -30,7 +27,6 @@ const currentPage = computed(() => {
   return store.state.currentPage;
 });
 const pageSize = computed(() => {
-  console.log(`pageSize: ${store.state.pageSize}`);
   return store.state.pageSize;
 });
 const fontScale = computed(() => {
@@ -77,9 +73,8 @@ function onChangePage(page: number) {
   store.dispatch("changeCurrentPage", page);
   try {
     // @ts-ignore
-    window.flutter_inappwebview.callHandler("changedPage", page);
+    changedPage.postMessage(page);
   } catch {}
-  // @ts-ignore
 }
 
 function onChangeFontScale(scale: number) {
@@ -87,10 +82,14 @@ function onChangeFontScale(scale: number) {
 }
 
 function onChangePageSize(size: number) {
+  if (size === pageSize.value) {
+    return;
+  }
+
   store.dispatch("changePageSize", size);
   try {
     // @ts-ignore
-    window.flutter_inappwebview.callHandler("changedPageSize", size);
+    changedPageSize.postMessage(size);
   } catch {}
 }
 
