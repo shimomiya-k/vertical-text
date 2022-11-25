@@ -11,7 +11,7 @@ const store = useStore(key);
 const pageWidth = ref(0);
 const pageHeight = ref(0);
 const timeout = ref(
-  "読み込み時間が長い場合は、アプリを再起動するか、文字数を減らして再度お試しください。"
+  "読み込み時間が長い場合は、アプリを再起動または画面右上の再読み込みボタンをお試しください。"
 );
 
 // computed

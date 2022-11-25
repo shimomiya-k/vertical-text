@@ -79,7 +79,7 @@ onUpdated(() => {
         fontSize: `${fontScale * 18 * 0.7}pt`,
       }"
     >
-      {{ title }}
+      {{ `${showPageNum ? `${props.position + 1}　` : ""}${title}` }}
     </div>
 
     <div
@@ -100,15 +100,6 @@ onUpdated(() => {
         v-html="text"
       ></div>
       <div class="text-box__last-daemon" ref="lastDaemon"></div>
-    </div>
-    <div
-      class="page-num-box"
-      v-if="showPageNum"
-      :style="{
-        fontSize: `${fontScale * 18 * 0.7}pt`,
-      }"
-    >
-      {{ props.position + 1 }}
     </div>
     <div
       class="author-box"
@@ -161,16 +152,6 @@ onUpdated(() => {
   left: 0;
   right: 0;
   top: 0;
-  overflow: hidden;
-}
-
-.page-num-box {
-  position: absolute;
-  margin: 0.5em 1.5em;
-  height: 1.5em;
-  left: 0;
-  right: 0;
-  bottom: 0;
   overflow: hidden;
 }
 
