@@ -147,8 +147,8 @@ onUpdated(() => {
 
 .title-box {
   position: absolute;
-  margin: 0.5em 1.5em;
-  height: 1.5em;
+  margin: 1em 1.5em 0em 1.5em;
+  height: 1.2em;
   left: 0;
   right: 0;
   top: 0;
@@ -158,7 +158,7 @@ onUpdated(() => {
 .author-box {
   position: absolute;
   margin: 0.5em 1.5em;
-  height: 1.5em;
+  height: 1.2em;
   left: 0;
   right: 0;
   bottom: 0;
