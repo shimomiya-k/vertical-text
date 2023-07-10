@@ -16,12 +16,15 @@ const timeout = ref(
 
 // computed
 const text = computed(() => {
-  return store.state.text;
+  return store.state.text ?? "";
 });
 const textIdol = computed(() => {
   const reg = /<h3 id="chapter\-\d+">/g;
-  const temp = store.state.text.replaceAll(reg, "<h3>");
-  return temp;
+  if (typeof String.prototype.replaceAll === "function") {
+    return text.value.replaceAll(reg, "<h3>");
+  }
+  // ES2021 (ECMAScript 2021)以前の環境ではreplaceAllが使えないため以下で解決
+  return text.value.replace(reg, "<h3>");
 });
 const currentPage = computed(() => {
   return store.state.currentPage;
